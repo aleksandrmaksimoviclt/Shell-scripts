@@ -1,0 +1,18 @@
+#!/bin/bash
+# This script creates postgresql database, user and grants newly created user all privileges on db.
+
+printf "Hi, $USER.\n"
+printf "Enter user name: "
+read -r user_name
+printf "Enter database name: "
+read -r database_name
+# printf "Changing user to postgres\n"
+# sh -c "sudo su postgres"
+printf "Creating user $user_name with password $user_name ...\n"
+sudo -u postgres psql -c "CREATE USER $user_name WITH PASSWORD '$user_name'"
+printf "Creating database $database_name ...\n"
+sudo -u postgres psql -c "CREATE DATABASE $database_name"
+printf "Granting all privileges on database $database_name to user $user_name\n"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $database_name TO $user_name"
+cd ~
+echo "done"
