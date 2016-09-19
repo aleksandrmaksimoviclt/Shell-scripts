@@ -1,0 +1,58 @@
+#!/bin/bash
+# This script creates django project virtual environment for it and adds project alias to ~/.bashrc"
+
+printf "Hi, $USER.\n"
+printf "Enter project name: "
+read -r project_name
+printf "Enter project alias: "
+read -r project_alias
+echo "Creating virtual environment for $project_name..."
+cd ~/Projects/Virtual_environments
+sh -c "virtualenv -p python3 ${project_name}_env"
+printf "Adding $project_name projects alias $project_alias to ~/.bashrc ...\n"
+sudo sh -c "cat >> ~/.bashrc <<EOF
+
+
+# Alias for $project_name project
+alias $project_alias='source ~/Projects/Virtual_environments/${project_name}_env/bin/activate; cd ~/Projects/$project_name/; python manage.py runserver;'
+EOF"
+printf "Sourcing virtual env\n"
+source ~/Projects/Virtual_environments/${project_name}_env/bin/activate
+printf "Installing DJANGO\n"
+sh -c "pip install django"
+cd ~/Projects
+printf "Starting django project\n"
+sh -c "django-admin startproject $project_name"
+cd ~/Projects/$project_name
+printf "Enter app name: "
+read -r app_name
+printf "Creating $project_name project application $app_name\n"
+sh -c "python manage.py startapp $app_name"
+printf "Creating user $project_name with password $project_name ...\n"
+sudo -u postgres psql -c "CREATE USER $project_name WITH PASSWORD '$project_name'"
+printf "Creating database $project_name ...\n"
+sudo -u postgres psql -c "CREATE DATABASE $project_name"
+printf "Granting all privileges on database $project_name to user $project_name\n"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $project_name TO $project_name"
+printf "Creating local_settings.py"
+touch $project_name/local_settings.py
+sudo sh -c "cat >> $project_name/local_settings.py <<EOF
+# -*- coding: utf-8 -*-
+\"\"\" Local settings file for $project_name project
+
+\"\"\"
+DEBUG = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '$project_name',
+        'USER': '$project_name',
+        'PASSWORD': '$project_name',
+    }
+}
+EOF"
+printf "Initial migration for $project_name"
+sh -c "python manage.py migrate"
+mkdir -p staticfiles/$app_name/{css,js,img,fonts}
+echo "done"
