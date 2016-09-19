@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script creates django project virtual environment for it and adds project alias to ~/.bashrc"
+# This script automates installation and setup of Django Franework in python3 virtual environment
 
 printf "Hi, $USER.\n"
 printf "Enter project name: "
