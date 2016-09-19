@@ -1,0 +1,20 @@
+#!/bin/bash
+# This script creates virtual environment for project and adds project alias to ~/.bashrc"
+
+printf "Hi, $USER.\n"
+printf "Enter project name: "
+read -r project_name
+printf "Enter project alias: "
+read -r project_alias
+echo "Creating virtual environment for $project_name..."
+cd ~/Projects/Virtual_environments
+sh -c "virtualenv -p python3 ${project_name}_env"
+printf "Adding $project_name projects alias $project_alias to ~/.bashrc ..."
+sudo sh -c "cat >> ~/.bashrc <<EOF
+
+
+# Alias for $project_name project
+alias $project_alias='source ~/Projects/Virtual_environments/${project_name}_env/bin/activate; cd ~/Projects/$project_name/; python manage.py runserver;'
+EOF"
+cd ~
+echo "done"
