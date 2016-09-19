@@ -5,4 +5,8 @@ This script creates virtual environment for project and adds project alias to ~/
 
 
 ### createpsqldb
-This script creates postgresql database, user and grants newly created user all privileges on created database.
+Creates postgresql database, user and grants newly created user all privileges on created database.
+
+
+###setup_django_project
+Automates installation and setup of Django Franework in python3 virtual environment.
