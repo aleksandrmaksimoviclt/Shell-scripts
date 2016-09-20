@@ -9,4 +9,4 @@ Creates postgresql database, user and grants newly created user all privileges o
 
 
 ###setup_django_project
-Automates installation and setup of Django Franework in python3 virtual environment.
+Automates installation and setup of Django Franework in python3 virtual environment for local development.
